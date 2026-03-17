@@ -24,7 +24,7 @@
     <!-- Nombres de los directorios que contienen los módulos. Asegurar que se correspondan con vuestros directorios -->
     <modules>
 	<module>SegurosCommon</module>
- 	<module>SegurosDAOH2</module>
+    <module>SegurosDAO</module> <!--DAOH2? -->
         <module>SegurosBusiness</module>   
         <module>SegurosGUI</module>
 	<module>SegurosMain</module>
