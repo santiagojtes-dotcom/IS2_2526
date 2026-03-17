@@ -12,6 +12,11 @@ import es.unican.is2.DataAccessException;
  */
 public class ClienteMapper {
 
+	private ClienteMapper() { 
+		// Evitamos que se pueda instanciar esta clase
+		throw new IllegalStateException("Clase no instanciable");
+	}
+
 	/**
 	 * Recibe una fila de la BBDD correspondinete a un Cliente 
 	 * y devuelve un objeto Cliente con los datos correspondientes

@@ -43,6 +43,10 @@ public class ClientesDAO implements IClientesDAO {
 			e.printStackTrace();
 			throw new DataAccessException();
 		}
+		finally {
+			// Cerramos la conexión
+			H2ServerConnectionManager.closeConnection(con);
+		}
 		return result;
 	}
 
@@ -51,8 +55,6 @@ public class ClientesDAO implements IClientesDAO {
 		Cliente cliente = null;
 		Cliente old = cliente(nuevo.getDni());
 		String statementText;
-
-		Connection con = H2ServerConnectionManager.getConnection();
 
 		statementText = String.format(
 				"update Clientes set nombre = '%s', minusvalia = '%b' where dni = '%s'", 
@@ -86,7 +88,7 @@ public class ClientesDAO implements IClientesDAO {
 		Connection con = H2ServerConnectionManager.getConnection(); 
 		try {
 			Statement statement = con.createStatement(); 
-			String statementText = "select * from Clientes"; 
+			String statementText = "SELECT Clientes.nombre FROM Clientes"; 
 			ResultSet results = statement.executeQuery(statementText); 
 			// Procesamos cada fila como vehiculo independiente
 			while (results.next()) {
@@ -94,7 +96,6 @@ public class ClientesDAO implements IClientesDAO {
 			}
 			statement.close(); 
 		} catch (SQLException e) {
-			// System.out.println(e);
 			throw new DataAccessException();
 		}
 

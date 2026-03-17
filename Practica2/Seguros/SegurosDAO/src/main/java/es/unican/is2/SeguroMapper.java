@@ -27,7 +27,7 @@ public class SeguroMapper {
 			String matricula = results.getString("matricula");
 			LocalDate fecha = results.getDate("fechaInicio").toLocalDate();
 			Cobertura cobertura = Cobertura.valueOf(results.getString("cobertura"));
-			int potencia = Integer.valueOf(results.getString("potencia"));
+			int potencia = Integer.parseInt(results.getString("potencia"));
 			String conductorAdicional = results.getString("conductorAdicional");
 			seg = new Seguro();
 			seg.setMatricula(matricula);

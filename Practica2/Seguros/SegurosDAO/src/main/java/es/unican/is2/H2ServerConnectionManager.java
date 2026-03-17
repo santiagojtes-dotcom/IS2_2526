@@ -5,13 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import es.unican.is2.DataAccessException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 /**
  * Clase que gestiona el acceso a la base de datos H2 en memoria.
  * Permite abrir conexiones y crear y rellenar la propia base de datos
  * al inicio de la aplicacion
- */
+*/
 public class H2ServerConnectionManager {
+	// instanciamos el logger para esta clase
+	private static final Logger logger = Logger.getLogger(H2ServerConnectionManager.class.getName());
 
 	// Conexion con la base de datos
 	protected static Connection connection;
@@ -100,7 +105,7 @@ public class H2ServerConnectionManager {
 			stm.close();
 			
 		} catch (SQLException e) {
-			System.out.println(e);
+			logger.log(Level.SEVERE, "Error al cargar los datos iniciales", e);
 			throw new DataAccessException();
 			
 		} 		
