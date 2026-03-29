@@ -1,0 +1,2 @@
+INDEX VERSION 1.134+/home/sebas/Insync/sorianosebal@gmail.com/OneDrive/Universidad/7mo_semestre/Ing_del_Software_II/Practicas/Practica2-maven-git-gh/Revision/IS2_2526/Practica2/.metadata/.plugins/org.eclipse.jdt.core
+1865797976.index

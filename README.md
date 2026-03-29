@@ -1,2 +1,13 @@
-# IS2_2526
-Practicas de Ing. de Software 2
+# Práctica 2 - IS2
+
+Aplicación de gestión de seguros (arquitectura 3 capas, Maven y Git).
+
+## Autores
+
+- Santiago Jerez
+- Sebastián Soriano
+
+## Notas
+
+- Rama principal de la práctica: `practica2`.
+- JAR ejecutable generado a partir del módulo `SegurosMain`.
