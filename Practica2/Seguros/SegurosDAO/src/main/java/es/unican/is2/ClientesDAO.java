@@ -30,23 +30,19 @@ public class ClientesDAO implements IClientesDAO {
 	public Cliente cliente(String dni) throws DataAccessException {
 		Cliente result = null; 
 		Connection con = H2ServerConnectionManager.getConnection();
-		try {
-			Statement statement = con.createStatement();
+		// Declaramos el Statement dentro de los paréntesis del try
+		try (Statement statement = con.createStatement()) {
 			String statementText = "select * from Clientes where dni = '"+ dni+"'";
-			ResultSet results = statement.executeQuery(statementText);
-			if (results.next()) { 
-				result = procesaCliente(con,results);
-			}
-			statement.close(); 
-		}
-		catch (SQLException e) {
+			// También es buena práctica incluir el ResultSet
+			try (ResultSet results = statement.executeQuery(statementText)) {
+				if (results.next()) { 
+					result = procesaCliente(con,results);
+				}
+			} // El ResultSet se cierra solo aquí
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException();
-		}
-		finally {
-			// Cerramos la conexión
-			H2ServerConnectionManager.closeConnection(con);
-		}
+		} // El Statement se cierra solo aquí
 		return result;
 	}
 
@@ -86,19 +82,17 @@ public class ClientesDAO implements IClientesDAO {
 	public List<Cliente> clientes() throws DataAccessException {
 		List<Cliente> clientes = new LinkedList<Cliente>();
 		Connection con = H2ServerConnectionManager.getConnection(); 
-		try {
-			Statement statement = con.createStatement(); 
+		try (Statement statement = con.createStatement()) { 
 			String statementText = "SELECT Clientes.nombre FROM Clientes"; 
-			ResultSet results = statement.executeQuery(statementText); 
-			// Procesamos cada fila como vehiculo independiente
-			while (results.next()) {
-				clientes.add(procesaCliente(con, results)); 
+			try (ResultSet results = statement.executeQuery(statementText)) {
+				// Procesamos cada fila 
+				while (results.next()) {
+					clientes.add(procesaCliente(con, results)); 
+				}
 			}
-			statement.close(); 
 		} catch (SQLException e) {
 			throw new DataAccessException();
 		}
-
 		return clientes;
 	}
 

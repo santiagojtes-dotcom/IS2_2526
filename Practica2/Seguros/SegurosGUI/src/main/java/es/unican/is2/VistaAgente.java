@@ -33,10 +33,8 @@ public class VistaAgente extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public VistaAgente(IGestionClientes clientes,
-			IGestionSeguros seguros, IInfoSeguros info) {
+	public VistaAgente(IGestionSeguros seguros, IInfoSeguros info) {
 		
-		this.clientes = clientes;
 		this.seguros = seguros;
 		this.info = info;
 		init();
