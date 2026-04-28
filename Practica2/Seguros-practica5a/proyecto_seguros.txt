@@ -1,0 +1,1909 @@
+ESTRUCTURA COMPLETA DEL PROYECTO MULTIMÓDULO:
+.
+├── pom.xml
+├── proyecto_seguros.txt
+├── SegurosBusiness
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── es
+│       │           └── unican
+│       │               └── is2
+│       │                   ├── App.java
+│       │                   └── GestionSeguros.java
+│       └── test
+│           └── java
+│               └── es
+│                   └── unican
+│                       └── is2
+│                           └── AppTest.java
+├── SegurosCommon
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── es
+│       │           └── unican
+│       │               └── is2
+│       │                   ├── App.java
+│       │                   ├── Cliente.java
+│       │                   ├── Cobertura.java
+│       │                   ├── DataAccessException.java
+│       │                   ├── IClientesDAO.java
+│       │                   ├── IGestionClientes.java
+│       │                   ├── IGestionSeguros.java
+│       │                   ├── IInfoSeguros.java
+│       │                   ├── ISegurosDAO.java
+│       │                   ├── OperacionNoValida.java
+│       │                   └── Seguro.java
+│       └── test
+│           └── java
+│               └── es
+│                   └── unican
+│                       └── is2
+│                           ├── AppTest.java
+│                           ├── ClienteTest.java
+│                           └── SeguroTest.java
+├── SegurosDAO
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── es
+│       │           └── unican
+│       │               └── is2
+│       │                   ├── App.java
+│       │                   ├── ClienteMapper.java
+│       │                   ├── ClientesDAO.java
+│       │                   ├── H2ServerConnectionManager.java
+│       │                   ├── SeguroMapper.java
+│       │                   └── SegurosDAO.java
+│       └── test
+│           └── java
+│               └── es
+│                   └── unican
+│                       └── is2
+│                           └── AppTest.java
+├── SegurosGUI
+│   ├── pom.xml
+│   └── src
+│       ├── main
+│       │   └── java
+│       │       └── es
+│       │           └── unican
+│       │               └── is2
+│       │                   ├── App.java
+│       │                   └── VistaAgente.java
+│       └── test
+│           └── java
+│               └── es
+│                   └── unican
+│                       └── is2
+│                           └── AppTest.java
+└── SegurosMain
+    ├── pom.xml
+    └── src
+        ├── main
+        │   └── java
+        │       └── es
+        │           └── unican
+        │               └── is2
+        │                   ├── App.java
+        │                   └── Runner.java
+        └── test
+            └── java
+                └── es
+                    └── unican
+                        └── is2
+                            └── AppTest.java
+
+61 directories, 37 files
+
+CONTENIDO DE ARCHIVOS (POMs Y JAVA):
+\n--- RUTA: ./pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <groupId>es.unican.is2</groupId>
+    <artifactId>Seguros</artifactId>
+    <version>0.0.1</version>
+    <packaging>pom</packaging>
+    <name>Seguros</name> <!-- Este es el nombre por defecto en Sonar -->
+
+    <properties>
+        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+
+        <!-- Propiedades para usar SonarQube en local-->
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <!-- modificar este token por el vuestro -->
+        <sonar.token>sqa_9368abf2130720ffa64dac9ed0513534936b8258</sonar.token> 
+        
+        <!-- Propiedades para usar SonarCloud -->
+        <!-- <sonar.projectKey>Seguros3</sonar.projectKey> -->
+        <!-- <sonar.projectName>Seguros3</sonar.projectName> -->
+    </properties>
+
+    <!-- Nombres de los directorios que contienen los módulos. Asegurar que se correspondan con vuestros directorios -->
+    <modules>
+	<module>SegurosCommon</module>
+    <module>SegurosDAO</module> <!--DAOH2? -->
+        <module>SegurosBusiness</module>   
+        <module>SegurosGUI</module>
+	<module>SegurosMain</module>
+    </modules>
+
+</project>
+\n--- RUTA: ./SegurosCommon/pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>es.unican.is2</groupId>
+  <artifactId>SegurosCommon</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/DataAccessException.java ---
+package es.unican.is2;
+
+public class DataAccessException extends Exception {
+
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/OperacionNoValida.java ---
+package es.unican.is2;
+
+@SuppressWarnings("serial")
+public class OperacionNoValida extends RuntimeException {
+
+	public OperacionNoValida(String string) {
+		super(string);
+	}
+
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/IGestionSeguros.java ---
+package es.unican.is2;
+
+import java.util.zip.DataFormatException;
+
+
+
+/**
+ * Interfaz de negocio para gestionar los
+ * seguros de la empresa de seguros
+ */
+public interface IGestionSeguros {
+	
+	/**
+	 * Agrega un nuevo seguro al cliente cuyo dni se indica.
+	 * @param s Seguro que desea agregar
+	 * @param dni DNI del cliente
+	 * @return El seguro agregado
+	 * 		   null si no se agrega porque no se encuentra el cliente
+	 * @throws OperacionNoValida si el seguro ya existe
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro nuevoSeguro(Seguro s, String dni) throws OperacionNoValida, DataAccessException;
+	
+	/**
+	 * Elimina el seguro cuya matricula se indica y 
+	 * que pertenece al cliente cuyo dni se indica
+	 * @param matricula Identificador del seguro a eliminar
+	 * @param dni DNI del propietario del seguro
+ 	 * @return El seguro eliminado
+ 	 *         null si el seguro o el cliente no existen
+ 	 * @throws OperacionNoValida si el seguro no pertenece al dni indicado
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro bajaSeguro(String matricula, String dni) throws OperacionNoValida, DataAccessException;
+
+	/**
+	 * Agrega o modifica el conductor adicional al seguro cuya matricula se indica
+	 * @param matricula Identificador del seguro
+	 * @param conductor Nombre del conductor adicional a agregar
+ 	 * @return El seguro modificado
+ 	 *         null si el seguro no existe
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro anhadeConductorAdicional(String matricula, String conductor) throws DataAccessException;
+
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/ISegurosDAO.java ---
+package es.unican.is2;
+
+import java.util.List;
+
+/**
+ * Interfaz DAO para los seguros
+ */
+public interface ISegurosDAO  {
+	
+	/** 
+	 * Persite un nuevo seguro
+	 * @param v Seguro a persistir
+	 * @return El seguro una vez persistido
+	 *         null si no se persiste el seguro porque ya existe
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro creaSeguro(Seguro v) throws DataAccessException;
+	
+	/**
+	 * Elimina el seguro correspondiente al identificador indicado
+	 * @param id
+	 * @return El seguro eliminado
+	 *         null si no se encuentra el seguro
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro eliminaSeguro(long id) throws DataAccessException;
+	
+	/**
+	 * Actualiza el estado del seguro
+	 * @param nuevo Nuevo estado del seguro
+	 * @return El seguro actualizado
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro actualizaSeguro(Seguro nuevo)throws DataAccessException;
+	
+	/**
+	 * Retorna el seguro correspondiente al identificador indicado
+	 * @param id
+	 * @return El seguro
+	 * 		   null si no se encuentra
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro seguro(long id) throws DataAccessException;
+
+
+	/**
+	 * Retorna el seguro correspondiente a la matricula indicada
+	 * @param matricula
+	 * @return El seguro
+	 * 		   null si no se encuentra
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro seguroPorMatricula(String matricula) throws DataAccessException;
+	
+	/**
+	 * Retorna la lista completa de seguros
+	 * @return La lista de seguros
+	 *         Lista vacia si no hay ninguno
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public List<Seguro> seguros() throws DataAccessException;
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/Cobertura.java ---
+package es.unican.is2;
+
+/**
+ * Tipo de cobertura proporcionada por un seguro
+ */
+public enum Cobertura {
+	
+	TERCEROS, TODO_RIESGO, TERCEROS_LUNAS;
+
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/IClientesDAO.java ---
+package es.unican.is2;
+
+import java.util.List;
+
+
+
+/**
+ * Interfaz DAO para vehiculos
+ */
+public interface IClientesDAO  {
+	
+	/** 
+	 * Persite un nuevo Cliente
+	 * @param c Cliente a persistir
+	 * @return El cliente una vez persistido
+	 *         null si no se puede persistir porque ya existe
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente creaCliente(Cliente c) throws DataAccessException;
+	
+	/**
+	 * Retorna el cliente con el dni indicado
+	 * @param dni 
+	 * @return El cliente
+	 * 		   null si no se encuentra
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente cliente(String dni) throws DataAccessException;
+	
+	/**
+	 * Actualiza el estado del cliente
+	 * @param nuevo Nuevo estado del cliente
+	 * @return El cliente actualizado
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente actualizaCliente(Cliente nuevo) throws DataAccessException;
+	
+	/**
+	 * Elimina el cliente con el dni indicado
+	 * @param dni
+	 * @return El cliente eliminado
+	 *         null si no se encuentra el cliente
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente eliminaCliente(String dni) throws DataAccessException;
+	
+	/**
+	 * Retorna la lista completa de clientes
+	 * @return Lista de clientes
+	 *         Lista vacia si no hay ninguno
+	* @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public List<Cliente> clientes() throws DataAccessException;
+	
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/Seguro.java ---
+package es.unican.is2;
+
+import java.time.LocalDate;
+
+/**
+ * Clase que representa un seguro de coche.
+ */
+public class Seguro {
+	
+	private long id;
+
+    private String matricula;
+
+	private int potencia;
+
+    private Cobertura cobertura;
+    
+    private LocalDate fechaInicio;
+
+	private String conductorAdicional;
+	
+	// constructor vacio para que otras clases no fallen
+	public Seguro() {
+	}
+	
+	public Seguro(String matricula, Cobertura cobertura, LocalDate fechaInicio, int potencia) {
+	    this.matricula = matricula;
+	    this.cobertura = cobertura;
+	    this.fechaInicio = fechaInicio;
+	    this.potencia = potencia;
+	}
+
+	/**
+	 * Retorna el identificador del seguro
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 *  Asigna el valor del identificador del seguro
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	/**
+	 * Retorna la matricula del coche 
+	 * asociado al seguro
+	 */
+	public String getMatricula() {
+		return matricula;
+	}
+
+	/**
+	 *  Asigna el valor de la matrícula del seguro
+	 */
+	public void setMatricula(String matricula) {
+		this.matricula = matricula;
+	}
+	/**
+	 * Retorna la fecha de contratacion del seguro
+	 */
+	public LocalDate getFechaInicio() {
+		return fechaInicio;
+	}
+
+	/**
+	 * Asigna la fecha de inicio del seguro
+	 * @param fechaInicio La fecha de inicio del seguro
+	 */
+	public void setFechaInicio(LocalDate fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	/**
+	 * Retorna el tipo de cobertura del seguro
+	 */
+	public Cobertura getCobertura() {
+		return cobertura;
+	}
+
+	/**
+	 * Asigna el tipo de cobertura del seguro
+	 * @param cobertura El tipo de cobertura del seguro
+	 */	
+	public void setCobertura(Cobertura cobertura) {
+		this.cobertura = cobertura;		
+}
+
+	/**
+     * Retorna la potencia del coche asociado 
+     * al seguro. 
+     */
+    public int getPotencia() {
+        return potencia;
+    }
+
+	/**
+	 *  Asigna el valor del identificador del seguro
+	 */
+	public void setPotencia(int potencia) {
+		this.potencia = potencia;
+	}
+
+	/**
+	 * Retorna el conductor adicional del seguro, si lo hay
+	 * @return El conductor adicional si lo hay
+	 * 		null en caso contrario
+	 */
+	public String getConductorAdicional() {
+		return conductorAdicional;
+	}
+
+	/**
+	 * Asigna el conductor adicional del seguro
+	 * @param conductorAdicional
+	 */
+	public void setConductorAdicional(String conductorAdicional) {
+		this.conductorAdicional = conductorAdicional;
+	}
+    
+    /**
+     * Retorna el precio del seguro. 
+	 * El precio se calcula a partir de la cobertura, la potencia del coche y el tiempo que lleva contratado el seguro
+	 * @return El precio del seguro
+	 *         0 si el seguro todavía no está en vigor (no se ha alcanzado su fecha de inicio)
+     */
+	public double precio() {
+		return 0;
+	}
+	
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/App.java ---
+package es.unican.is2;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/IInfoSeguros.java ---
+package es.unican.is2;
+
+/**
+ * Interfaz con metodos de consulta de informacion
+ * de la empresa de seguros
+ */
+public interface IInfoSeguros {
+	
+	/**
+	 * Retorna el cliente cuyo dni se indica
+	 * @param dni DNI del cliente buscado
+	 * @return El cliente cuyo dni coincide
+	 * 		   null en caso de que no exista
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente cliente(String dni) throws DataAccessException; 
+	
+	/**
+	 * Retorna el seguro cuya matricula se indica
+	 * @param matricula Identificador del seguro
+	 * @return El seguro indicado
+	 * 	       null si no existe
+	* @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Seguro seguro(String matricula) throws DataAccessException;
+
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/Cliente.java ---
+package es.unican.is2;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+import java.util.List;
+
+/**
+ * Clase que representa un cliente de la empresa de seguros
+ * Un cliente se identifica por su dni
+ */
+public class Cliente {
+
+    private String dni;
+
+    private String nombre;  
+    
+    private boolean minusvalia;
+
+    private List<Seguro> seguros = new LinkedList<Seguro>();
+    
+    // constructor vacio para que otras clases no fallen
+    public Cliente() {
+        this.seguros = new ArrayList<>();
+    }
+    
+    public Cliente(String nombre, String dni, boolean minusvalia) {
+        this.nombre = nombre;
+        this.dni = dni;
+        this.minusvalia = minusvalia;
+        this.seguros = new ArrayList<>();
+    }
+    
+	/**
+     * Retorna los seguros del cliente 
+     */
+    public List<Seguro> getSeguros() {
+        return seguros;
+    }
+    
+    /**
+     * Asigna la lista de seguros
+     */
+    public void setSeguros(List<Seguro> seguros) {
+        this.seguros = seguros;
+    }
+
+    /**
+     * Retorna el nombre del cliente.   
+     */
+    public String getNombre() {
+        return nombre;
+    }
+
+    /**
+     * Asigna el nombre del cliente
+     */
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    /**
+     * Retorna el dni del cliente.
+     */
+    public String getDni() {
+        return dni;
+    }
+
+    /**
+     * Asigna el dni del cliente
+     * @param dni
+     */
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+    
+    /**
+     * Indica si el cliente es minusvalido
+     */
+    public boolean getMinusvalia() {
+    	return minusvalia;
+    }
+
+    /**
+     * Asigna la minusvalia del cliente
+     * @param minusvalia
+     */
+     public void setMinusvalia(boolean minusvalia) {
+        this.minusvalia = minusvalia;
+    }
+    
+    /**
+     * Calcula el total a pagar por el cliente por 
+     * todos los seguros a su nombre
+     */
+    public double totalSeguros() {
+    double total = 0;
+    for (Seguro s : seguros) {
+        total += s.precio();
+    }
+    // Descuento 25% si tiene minusvalía
+    if (minusvalia) {
+        total *= 0.75;
+    }
+    return total;
+}
+
+
+}
+\n--- RUTA: ./SegurosCommon/src/main/java/es/unican/is2/IGestionClientes.java ---
+package es.unican.is2;
+
+
+
+
+/**
+ * Interfaz de negocio para gestionar los 
+ * clientes de la empresa de seguros
+ */
+public interface IGestionClientes {
+	
+	/**
+	 * Persiste un nuevo cliente
+	 * @param c Cliente que desea persistir
+	 * @return El cliente persitido
+	 * 		   null si no se persiste porque ya existe
+	  * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente nuevoCliente(Cliente c) throws DataAccessException;
+	
+	/**
+	 * Elimina el cliente cuyo dni se indica
+	 * @param dni DNI del cliente que se quiere eliminar
+	 * @return El cliente eliminado
+	 * 		   null si no se elimina porque no se encuentra 
+	 * @throws OperacionNoValida si el cliente existe 
+	 *         pero tiene seguros a su nombre
+	 * @throws DataAccessException si se produce un error 
+	 * en el acceso a la base de datos
+	 */
+	public Cliente bajaCliente(String dni) throws OperacionNoValida,DataAccessException;
+		
+	
+}
+\n--- RUTA: ./SegurosCommon/src/test/java/es/unican/is2/SeguroTest.java ---
+package es.unican.is2;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
+
+public class SeguroTest {
+
+    private Seguro s;
+
+    @Test
+    public void testPrecioCajaNegra() {
+        // S1: TODO_RIESGO, potencia 80 (sin recargo), fecha antigua (con descuento)
+        // base 600 * 0.9 = 540
+        s = new Seguro("1234ABC", Cobertura.TODO_RIESGO, LocalDate.now().minusMonths(2), 80);
+        assertEquals(540.0, s.precio(), 0.001);
+
+        // S2: TERCEROS, potencia 100 (recargo 5%), fecha reciente (sin descuento)
+        // base 400 + (400 * 0.05) = 420
+        s = new Seguro("1234ABC", Cobertura.TERCEROS, LocalDate.now(), 100);
+        assertEquals(420.0, s.precio(), 0.001);
+
+        // S3: TODO_RIESGO, ootencia 120 (recargo 8%), hoy (sin descuento)
+        // base 600 + (600 * 0.08) = 648
+        s = new Seguro("1234ABC", Cobertura.TODO_RIESGO, LocalDate.now(), 120);
+        assertEquals(648.0, s.precio(), 0.001);
+    }
+
+    @Test
+    public void testPrecioAVL() {
+        // S4: limite inferior de recargo (potencia 89)
+        s = new Seguro("1234ABC", Cobertura.TERCEROS, LocalDate.now(), 89);
+        assertEquals(400.0, s.precio(), 0.001);
+
+        // S5: limite exacto recargo 5% (potencia 90)
+        s = new Seguro("1234ABC", Cobertura.TERCEROS, LocalDate.now(), 90);
+        assertEquals(420.0, s.precio(), 0.001);
+
+        // S6: limite exacto recargo 8% (potencia 111)
+        s = new Seguro("1234ABC", Cobertura.TODO_RIESGO, LocalDate.now(), 111);
+        assertEquals(648.0, s.precio(), 0.001);
+    }
+}\n--- RUTA: ./SegurosCommon/src/test/java/es/unican/is2/ClienteTest.java ---
+package es.unican.is2;
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
+
+public class ClienteTest {
+
+    private Cliente cliente;
+
+    @BeforeEach
+    public void setUp() {
+        cliente = new Cliente("Juan", "11111111A", false);
+    }
+
+    @Test
+    public void testTotalSegurosSinMinusvalia() {
+        // C1: Cliente con dos seguros sin minusvalía
+        Seguro s1 = new Seguro("1111AAA", Cobertura.TERCEROS, LocalDate.now(), 80); // 400
+        Seguro s2 = new Seguro("2222BBB", Cobertura.TODO_RIESGO, LocalDate.now(), 80); // 600
+        cliente.getSeguros().add(s1);
+        cliente.getSeguros().add(s2);
+
+        assertEquals(1000.0, cliente.totalSeguros(), 0.001);
+    }
+
+    @Test
+    public void testTotalSegurosConMinusvalia() {
+        // C2: Cliente con minusvalía (Descuento 25%)
+        cliente.setMinusvalia(true);
+        Seguro s1 = new Seguro("1111AAA", Cobertura.TERCEROS, LocalDate.now(), 80); // 400
+        cliente.getSeguros().add(s1);
+
+        // 400 * 0.75 = 300
+        assertEquals(300.0, cliente.totalSeguros(), 0.001);
+    }
+
+    @Test
+    public void testTotalSegurosListaVacia() {
+        // C3: Caso borde - Cliente sin seguros
+        assertEquals(0.0, cliente.totalSeguros(), 0.001);
+    }
+}\n--- RUTA: ./SegurosCommon/src/test/java/es/unican/is2/AppTest.java ---
+package es.unican.is2;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+}
+\n--- RUTA: ./SegurosBusiness/pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>es.unican.is2</groupId>
+  <artifactId>SegurosBusiness</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosCommon</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
+\n--- RUTA: ./SegurosBusiness/src/main/java/es/unican/is2/App.java ---
+package es.unican.is2;
+import java.util.logging.Logger;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    private static final Logger logger = Logger.getLogger(App.class.getName());
+
+    public static void main( String[] args )
+    {
+        logger.info( "Hello World!" );
+    }
+}
+\n--- RUTA: ./SegurosBusiness/src/main/java/es/unican/is2/GestionSeguros.java ---
+package es.unican.is2;
+
+import es.unican.is2.IClientesDAO;
+import es.unican.is2.ISegurosDAO;
+import es.unican.is2.IGestionClientes;
+import es.unican.is2.IGestionSeguros;
+import es.unican.is2.IInfoSeguros;
+import es.unican.is2.Cliente;
+import es.unican.is2.Seguro;
+import es.unican.is2.DataAccessException;
+import es.unican.is2.OperacionNoValida;
+
+public class GestionSeguros implements IGestionClientes, IGestionSeguros, IInfoSeguros {
+
+    private IClientesDAO clientesDAO;
+    private ISegurosDAO segurosDAO;
+
+    public GestionSeguros(IClientesDAO clientesDAO, ISegurosDAO segurosDAO) {
+        this.clientesDAO = clientesDAO;
+        this.segurosDAO = segurosDAO;
+    }
+
+    // IGestionClientes
+    @Override
+    public Cliente nuevoCliente(Cliente c) throws DataAccessException {
+        return clientesDAO.creaCliente(c);
+    }
+
+    @Override
+    public Cliente bajaCliente(String dni) throws OperacionNoValida, DataAccessException {
+        Cliente c = clientesDAO.cliente(dni);
+        if (c == null) {
+            return null;
+        }
+        if (!c.getSeguros().isEmpty()) {
+            throw new OperacionNoValida("El cliente tiene seguros a su nombre");
+        }
+        return clientesDAO.eliminaCliente(dni);
+    }
+
+    // IGestionSeguros
+    @Override
+    public Seguro nuevoSeguro(Seguro s, String dni) throws OperacionNoValida, DataAccessException {
+        // Verificar que el cliente existe
+        Cliente c = clientesDAO.cliente(dni);
+        if (c == null) {
+            return null;
+        }
+        // Verificar que la matricula no existe ya
+        Seguro existente = segurosDAO.seguroPorMatricula(s.getMatricula());
+        if (existente != null) {
+            throw new OperacionNoValida("Ya existe un seguro con esa matricula");
+        }
+        // Crear el seguro y asociarlo al cliente
+        Seguro creado = segurosDAO.creaSeguro(s);
+        c.getSeguros().add(creado);
+        clientesDAO.actualizaCliente(c);
+        return creado;
+    }
+
+    @Override
+    public Seguro bajaSeguro(String matricula, String dni) throws OperacionNoValida, DataAccessException {
+        // Verificar que el cliente existe
+        Cliente c = clientesDAO.cliente(dni);
+        if (c == null) {
+            return null;
+        }
+        // Verificar que el seguro existe
+        Seguro s = segurosDAO.seguroPorMatricula(matricula);
+        if (s == null) {
+            return null;
+        }
+        // Verificar que el seguro pertenece al cliente
+        if (!c.getSeguros().contains(s)) {
+            throw new OperacionNoValida("El seguro no pertenece al cliente indicado");
+        }
+        // Eliminar el seguro y actualizar el cliente
+        c.getSeguros().remove(s);
+        clientesDAO.actualizaCliente(c);
+        return segurosDAO.eliminaSeguro(s.getId());
+    }
+
+    @Override
+    public Seguro anhadeConductorAdicional(String matricula, String conductor) throws DataAccessException {
+        Seguro s = segurosDAO.seguroPorMatricula(matricula);
+        if (s == null) {
+            return null;
+        }
+        s.setConductorAdicional(conductor);
+        return segurosDAO.actualizaSeguro(s);
+    }
+
+    // IInfoSeguros
+    @Override
+    public Cliente cliente(String dni) throws DataAccessException {
+        return clientesDAO.cliente(dni);
+    }
+
+    @Override
+    public Seguro seguro(String matricula) throws DataAccessException {
+        return segurosDAO.seguroPorMatricula(matricula);
+    }
+}
+\n--- RUTA: ./SegurosBusiness/src/test/java/es/unican/is2/AppTest.java ---
+package es.unican.is2;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+}
+\n--- RUTA: ./SegurosMain/pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>es.unican.is2</groupId>
+  <artifactId>SegurosMain</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosCommon</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosBusiness</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosDAO</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosGUI</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.6.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>es.unican.is2.Runner</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+\n--- RUTA: ./SegurosMain/src/main/java/es/unican/is2/App.java ---
+package es.unican.is2;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+}
+\n--- RUTA: ./SegurosMain/src/main/java/es/unican/is2/Runner.java ---
+package es.unican.is2;
+
+import es.unican.is2.GestionSeguros;
+
+public class Runner {
+
+	public static void main(String[] args) {
+		IClientesDAO daoClientes = new ClientesDAO();
+		ISegurosDAO daoSeguros = new SegurosDAO();
+		GestionSeguros negocio = new GestionSeguros(daoClientes, daoSeguros);
+		VistaAgente vista = new VistaAgente(negocio, negocio);
+		vista.setVisible(true);
+	}
+
+}
+\n--- RUTA: ./SegurosMain/src/test/java/es/unican/is2/AppTest.java ---
+package es.unican.is2;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+}
+\n--- RUTA: ./SegurosDAO/pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>es.unican.is2</groupId>
+  <artifactId>SegurosDAO</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosCommon</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
+\n--- RUTA: ./SegurosDAO/src/main/java/es/unican/is2/ClienteMapper.java ---
+package es.unican.is2;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import es.unican.is2.Cliente;
+import es.unican.is2.DataAccessException;
+
+/**
+ * Clase de utilidad que mapea filas de la base de datos a 
+ * instancias de Cliente
+ */
+public class ClienteMapper {
+
+	private ClienteMapper() { 
+		// Evitamos que se pueda instanciar esta clase
+		throw new IllegalStateException("Clase no instanciable");
+	}
+
+	/**
+	 * Recibe una fila de la BBDD correspondinete a un Cliente 
+	 * y devuelve un objeto Cliente con los datos correspondientes
+	 * a sus atributos primitivos (no asociaciones multiples)
+	 * @param results Fila resultado de una consulta en base de datos
+	 * @return Cliente El cliente en su estado actual en BBDD
+	 */
+	public static Cliente toCliente(ResultSet results) throws DataAccessException {
+
+		Cliente cont =null;
+		try {
+			String dni = results.getString("dni");
+			String nombre = results.getString("nombre");
+			boolean minusvalia = results.getBoolean("minusvalia");
+			cont = new Cliente();
+			cont.setDni(dni);
+			cont.setNombre(nombre);	
+			cont.setMinusvalia(minusvalia);
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataAccessException();
+		}
+		return cont;
+	}
+}
+\n--- RUTA: ./SegurosDAO/src/main/java/es/unican/is2/SeguroMapper.java ---
+package es.unican.is2;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+
+import es.unican.is2.Seguro;
+import es.unican.is2.Cobertura;
+import es.unican.is2.DataAccessException;
+/**
+ * Clase de utilidad que mapea filas de la base de datos a 
+ * instancias de Seguro
+ */
+public class SeguroMapper {
+
+	/**
+	 * Recibe una fila de la BBDD correspondiente a un seguro 
+	 * y devuelve un objeto Seguro con los datos correspondientes
+	 * @param results Fila resultado de una consulta en base de datos
+	 * @return El seguro en su estado actual en BBDD
+	 */
+	public static Seguro toSeguro(ResultSet results) throws DataAccessException {
+
+		Seguro seg = null;
+		try {
+			long id = results.getLong("id");
+			String matricula = results.getString("matricula");
+			LocalDate fecha = results.getDate("fechaInicio").toLocalDate();
+			Cobertura cobertura = Cobertura.valueOf(results.getString("cobertura"));
+			int potencia = Integer.parseInt(results.getString("potencia"));
+			String conductorAdicional = results.getString("conductorAdicional");
+			seg = new Seguro();
+			seg.setMatricula(matricula);
+			seg.setCobertura(cobertura);	
+			seg.setPotencia(potencia);
+			seg.setConductorAdicional(conductorAdicional);
+			seg.setFechaInicio(fecha);
+			seg.setId(id);
+			return seg;
+		} catch (SQLException e) {
+			throw new DataAccessException();
+		}
+	}
+
+}
+\n--- RUTA: ./SegurosDAO/src/main/java/es/unican/is2/SegurosDAO.java ---
+package es.unican.is2;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
+
+
+public class SegurosDAO implements ISegurosDAO {
+
+	@Override
+	public Seguro creaSeguro(Seguro s) throws DataAccessException {
+		String insertStatement = String.format(
+				"insert into Seguros(matricula, fechaInicio, cobertura, potencia, conductorAdicional) values ('%s', '%s', '%s', %d, '%s')",
+				s.getMatricula(),
+				s.getFechaInicio().toString(),
+				s.getCobertura().toString(),
+				s.getPotencia(),
+				s.getConductorAdicional());
+		H2ServerConnectionManager.executeSqlStatement(insertStatement);
+		return s;
+	}
+
+	@Override
+	public Seguro eliminaSeguro(long id) throws DataAccessException {
+		Seguro seguro = seguro(id);
+		Connection con = H2ServerConnectionManager.getConnection();
+		String statementText = "delete from Seguros where id = " + id;
+		H2ServerConnectionManager.executeSqlStatement(statementText);
+		return seguro;
+	}
+
+	@Override
+	public Seguro actualizaSeguro(Seguro nuevo) throws DataAccessException {
+		Seguro seguro = null;
+		Seguro old = seguro(nuevo.getId());
+		String statementText;
+		Connection con = H2ServerConnectionManager.getConnection();
+
+		statementText = String.format(
+				"update Seguros set matricula = '%s', fechaInicio = '%s', cobertura = '%s', potencia = '%d', conductorAdicional = '%s' where id = '%d'", 
+				nuevo.getMatricula(), nuevo.getFechaInicio().toString(), nuevo.getCobertura().toString(), nuevo.getPotencia(), nuevo.getConductorAdicional(), nuevo.getId());
+			H2ServerConnectionManager.executeSqlStatement(statementText);
+			seguro = seguro(nuevo.getId());
+		return seguro;
+	}
+
+	@Override
+	public Seguro seguro(long id) throws DataAccessException {
+		Seguro result = null; 
+		Connection con = H2ServerConnectionManager.getConnection();
+		try {
+			Statement statement = con.createStatement();
+			String statementText = "select * from Seguros where id = '"+ id+"'";
+			ResultSet results = statement.executeQuery(statementText);
+			if (results.next()) { 
+				result = SeguroMapper.toSeguro(results);
+			}
+			statement.close(); 
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataAccessException();
+		}
+		return result;
+	}
+
+	@Override
+	public List<Seguro> seguros() throws DataAccessException {
+		List<Seguro> seguros = new LinkedList<Seguro>();
+		Connection con = H2ServerConnectionManager.getConnection(); 
+		try {
+			Statement statement = con.createStatement(); 
+			String statementText = "select * from Seguros"; 
+			ResultSet results = statement.executeQuery(statementText); 
+			// Procesamos cada fila como vehiculo independiente
+			while (results.next()) {
+				seguros.add(SeguroMapper.toSeguro(results)); 
+			}
+			statement.close(); 
+		} catch (SQLException e) {
+			// System.out.println(e);
+			throw new DataAccessException();
+		}
+
+		return seguros;
+	}
+
+	@Override
+	public Seguro seguroPorMatricula(String matricula) throws DataAccessException {
+		Seguro result = null; 
+		Connection con = H2ServerConnectionManager.getConnection();
+		try {
+			Statement statement = con.createStatement();
+			String statementText = "select * from Seguros where matricula = '"+ matricula+"'";
+			ResultSet results = statement.executeQuery(statementText);
+			if (results.next()) { 
+				result = SeguroMapper.toSeguro(results);
+			}
+			statement.close(); 
+		}
+		catch (SQLException e) {
+			throw new DataAccessException();
+		}
+		return result;
+	}
+	
+	
+
+	
+
+}
+\n--- RUTA: ./SegurosDAO/src/main/java/es/unican/is2/App.java ---
+package es.unican.is2;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+}
+\n--- RUTA: ./SegurosDAO/src/main/java/es/unican/is2/H2ServerConnectionManager.java ---
+package es.unican.is2;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import es.unican.is2.DataAccessException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
+/**
+ * Clase que gestiona el acceso a la base de datos H2 en memoria.
+ * Permite abrir conexiones y crear y rellenar la propia base de datos
+ * al inicio de la aplicacion
+*/
+public class H2ServerConnectionManager {
+	// instanciamos el logger para esta clase
+	private static final Logger logger = Logger.getLogger(H2ServerConnectionManager.class.getName());
+
+	// Conexion con la base de datos
+	protected static Connection connection;
+
+	// Atributos de acceso a la Base de Datos
+	protected static String dbName = "test";
+	protected static String user = "sa";
+	protected static String pass = "";
+
+	/**
+	 * Obtiene una conexion con la base de datos
+	 * @return La conexion
+	 * @throws DataAccessException si no se puede establecer al conexion
+	 */
+	public static Connection getConnection() throws DataAccessException {
+
+		if (connection == null) { 
+			try {
+				Class.forName("org.h2.Driver"); //comprueba que el driver esta instalado
+				connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa","");		
+				cargaDatos();
+			} catch (SQLException | ClassNotFoundException e) {
+				throw new DataAccessException();
+			}
+		}
+		return connection;
+	}
+
+	/**
+	 * Crea la base de datos e introduce los datos iniciales
+	 * @throws DataAccessException Si hay un fallo en la conexion
+	 */
+	public static void cargaDatos() throws DataAccessException {
+		try {
+			Connection con = getConnection();
+			
+			// Creacion programatica de la BBDD
+			Statement stm = con.createStatement(); 
+			
+			// Creacion de la tabla Clientes
+			String sql= "CREATE TABLE Clientes (dni CHAR(9) NOT NULL, nombre VARCHAR(100) NOT NULL, "
+					+ "minusvalia BOOLEAN NOT NULL, PRIMARY KEY(dni))";
+			stm.execute(sql); 
+			
+			// Creacion de la tabla Vehiculos
+			sql  = "CREATE TABLE Seguros (id BIGINT NOT NULL AUTO_INCREMENT, matricula CHAR(7) NOT NULL, fechaInicio DATE NOT NULL, "
+					+ "cobertura VARCHAR(100) NOT NULL, potencia INT NOT NULL, conductorAdicional VARCHAR(100), cliente_FK CHAR(9) NOT NULL, "
+					+ "PRIMARY KEY(id), FOREIGN KEY(cliente_FK) REFERENCES Clientes(dni))";
+
+			stm.execute(sql); 		
+			
+			// Inicializa contribuyentes
+			sql = "INSERT INTO Clientes (dni, nombre, minusvalia) VALUES ('11111111A', 'Juan', false)"; 
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO Clientes (dni, nombre, minusvalia) VALUES ('22222222A', 'Ana', false)"; 
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO Clientes (dni, nombre, minusvalia) VALUES ('33333333A', 'Luis', true)"; 
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO Clientes (dni, nombre, minusvalia) VALUES ('44444444A', 'Pepe', false)"; 
+			stm.executeUpdate(sql);
+			
+			// Inicializa vehiculos
+			sql = "INSERT INTO Seguros (matricula, fechaInicio, cobertura, potencia, cliente_FK) "
+					+ "VALUES ('1111AAA', '2002-01-15', 'TERCEROS', 15, '11111111A')";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO Seguros (matricula, fechaInicio, cobertura, potencia, conductorAdicional, cliente_FK) "
+					+ "VALUES ('1111BBB', '2016-05-20', 'TODO_RIESGO', 20, 'Pepe', '11111111A')";
+			stm.executeUpdate(sql);			
+			sql = "INSERT INTO Seguros (matricula, fechaInicio, cobertura, potencia, cliente_FK) "
+					+ "VALUES ('1111CCC', '2022-05-21', 'TERCEROS', 100, '11111111A')";
+			stm.executeUpdate(sql);
+			
+			sql = "INSERT INTO Seguros (matricula, fechaInicio, cobertura, potencia, cliente_FK) "
+					+ "VALUES ('2222AAA', '2010-06-01', 'TERCEROS_LUNAS', 25, '22222222A')";
+			stm.executeUpdate(sql);
+			
+			sql = "INSERT INTO Seguros (matricula, fechaInicio, cobertura, potencia, cliente_FK) "
+					+ "VALUES ('4444AAA', '2024-01-02', 'TERCEROS', 40, '44444444A')";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO Seguros (matricula, fechaInicio, cobertura, potencia, cliente_FK) "
+					+ "VALUES ('4444BBB', '2024-01-02', 'TERCEROS_LUNAS', 300, '44444444A')";
+			stm.executeUpdate(sql);
+			
+			
+			// Cierra el statement
+			stm.close();
+			
+		} catch (SQLException e) {
+			logger.log(Level.SEVERE, "Error al cargar los datos iniciales", e);
+			throw new DataAccessException();
+			
+		} 		
+	}
+
+	/**
+	 * Metodo estatico para ejecutar operaciones SQL y manejar los errores.
+	 * 
+	 * IMPORTANTE: este metodo solo puede ser llamado para operaciones de INSERT, UPDATE
+	 * y DELETE. No debe usarse para realizar SELECTs ni llamadas a PROCEDIMIENTO, las ejecuciones
+	 * de ese tipo de operaciones tienen que implementarse en sus respectivos metodos.
+	 * @param stringStatement Instruccion a ejecutar
+	 * @return true si se ha ejecutado la operacion
+	 *         false si no se ha ejecutado la operacion
+	 * @throws DataAccessException si hay un error en la conexion
+	 */
+	public static void executeSqlStatement(String stringStatement) throws DataAccessException {
+		Connection con = getConnection(); 
+		try {
+			Statement stm = con.createStatement(); 
+			stm.execute(stringStatement); 
+			stm.close(); 
+		}
+		catch (SQLException e) {
+			throw new DataAccessException(); 
+		}
+	}
+}
+\n--- RUTA: ./SegurosDAO/src/main/java/es/unican/is2/ClientesDAO.java ---
+package es.unican.is2;
+
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
+import es.unican.is2.Cliente;
+import es.unican.is2.IClientesDAO;
+import es.unican.is2.DataAccessException;
+import es.unican.is2.Seguro;
+
+
+public class ClientesDAO implements IClientesDAO {
+
+	@Override
+	public Cliente creaCliente(Cliente c) throws DataAccessException {
+		String insertStatement = String.format(
+				"insert into Clientes(dni, nombre, minusvalia) values ('%s', '%s', '%b')",
+				c.getDni(),
+				c.getNombre(),
+				c.getMinusvalia());
+		H2ServerConnectionManager.executeSqlStatement(insertStatement);
+		return c;
+	}
+
+	@Override
+	public Cliente cliente(String dni) throws DataAccessException {
+		Cliente result = null; 
+		Connection con = H2ServerConnectionManager.getConnection();
+		// Declaramos el Statement dentro de los paréntesis del try
+		try (Statement statement = con.createStatement()) {
+			String statementText = "select * from Clientes where dni = '"+ dni+"'";
+			// También es buena práctica incluir el ResultSet
+			try (ResultSet results = statement.executeQuery(statementText)) {
+				if (results.next()) { 
+					result = procesaCliente(con,results);
+				}
+			} // El ResultSet se cierra solo aquí
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DataAccessException();
+		} // El Statement se cierra solo aquí
+		return result;
+	}
+
+	@Override
+	public Cliente actualizaCliente(Cliente nuevo) throws DataAccessException {
+		Cliente cliente = null;
+		Cliente old = cliente(nuevo.getDni());
+		String statementText;
+
+		statementText = String.format(
+				"update Clientes set nombre = '%s', minusvalia = '%b' where dni = '%s'", 
+				nuevo.getNombre(), nuevo.getMinusvalia(), nuevo.getDni());
+			H2ServerConnectionManager.executeSqlStatement(statementText);
+			for(Seguro s: old.getSeguros()) {
+				if (!nuevo.getSeguros().contains(s)) {
+					statementText = String.format(
+						"update Seguros set cliente_FK = null where id = '%d'",
+						s.getId());
+					H2ServerConnectionManager.executeSqlStatement(statementText);
+				}
+			}
+			cliente = cliente(nuevo.getDni());
+		
+		return cliente;
+	}
+
+	@Override
+	public Cliente eliminaCliente(String dni) throws DataAccessException {
+		Cliente cliente = cliente(dni);
+		Connection con = H2ServerConnectionManager.getConnection();
+		String statementText = "delete from Clientes where dni = " + dni;
+		H2ServerConnectionManager.executeSqlStatement(statementText);
+		return cliente;
+	}
+
+	@Override
+	public List<Cliente> clientes() throws DataAccessException {
+		List<Cliente> clientes = new LinkedList<Cliente>();
+		Connection con = H2ServerConnectionManager.getConnection(); 
+		try (Statement statement = con.createStatement()) { 
+			String statementText = "SELECT Clientes.nombre FROM Clientes"; 
+			try (ResultSet results = statement.executeQuery(statementText)) {
+				// Procesamos cada fila 
+				while (results.next()) {
+					clientes.add(procesaCliente(con, results)); 
+				}
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException();
+		}
+		return clientes;
+	}
+
+	private Cliente procesaCliente(Connection con, ResultSet results) throws SQLException, DataAccessException {
+		Cliente result = ClienteMapper.toCliente(results);
+		// Cargamos los seguros del cliente
+		Statement statement = con.createStatement();
+		String statementText = String.format("select * from Seguros where cliente_FK = '%s'", result.getDni());
+		results = statement.executeQuery(statementText);
+		while (results.next()) {
+			result.getSeguros().add(SeguroMapper.toSeguro(results));
+		}
+		statement.close();
+		return result;
+	}
+	
+}
+\n--- RUTA: ./SegurosDAO/src/test/java/es/unican/is2/AppTest.java ---
+package es.unican.is2;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+}
+\n--- RUTA: ./SegurosGUI/pom.xml ---
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>es.unican.is2</groupId>
+  <artifactId>SegurosGUI</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.release>11</maven.compiler.release>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>es.unican.is2</groupId>
+      <artifactId>SegurosCommon</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
+\n--- RUTA: ./SegurosGUI/src/main/java/es/unican/is2/VistaAgente.java ---
+package es.unican.is2;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultListModel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JList;
+import javax.swing.border.LineBorder;
+
+import java.awt.Color;
+import javax.swing.JButton;
+
+@SuppressWarnings("serial")
+public class VistaAgente extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField txtDniCliente;
+	private JTextField txtTotalCliente;
+	private JTextField txtNombreCliente;
+	private JList<String> listSeguros; 
+	private DefaultListModel<String> listModel;
+	private JButton btnBuscar;
+	
+	private IGestionSeguros seguros;
+	private IInfoSeguros info;
+
+	/**
+	 * Create the frame.
+	 */
+	public VistaAgente(IGestionSeguros seguros, IInfoSeguros info) {
+		
+		this.seguros = seguros;
+		this.info = info;
+		init();
+	}
+	
+	public void init() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 341);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		listModel=  new DefaultListModel<String>();
+		
+		txtTotalCliente = new JTextField();
+		txtTotalCliente.setBounds(230, 251, 180, 20);
+		contentPane.add(txtTotalCliente);
+		txtTotalCliente.setColumns(10);
+		txtTotalCliente.setName("txtTotalCliente");
+		
+		JLabel lblTotalCliente = new JLabel("Total A Pagar");
+		lblTotalCliente.setBounds(137, 254, 180, 14);
+		contentPane.add(lblTotalCliente);
+		
+		listSeguros = new JList<String>();
+		listSeguros.setBounds(230, 98, 180, 116);
+		contentPane.add(listSeguros);
+		listSeguros.setBorder(new LineBorder(new Color(0, 0, 0)));
+		listSeguros.setModel(listModel);
+		
+		JLabel lblSeguros = new JLabel("Seguros");
+		lblSeguros.setBounds(149, 93, 65, 14);
+		contentPane.add(lblSeguros);
+		
+		JLabel lblNombreCliente = new JLabel("Nombre");
+		lblNombreCliente.setBounds(155, 54, 65, 14);
+		contentPane.add(lblNombreCliente);
+		
+		txtNombreCliente = new JTextField();
+		txtNombreCliente.setBounds(230, 51, 180, 20);
+		contentPane.add(txtNombreCliente);
+		txtNombreCliente.setColumns(10);
+		txtNombreCliente.setName("txtNombreCliente");
+		
+		JLabel lblDatosCliente = new JLabel("Datos Cliente");
+		lblDatosCliente.setBounds(230, 11, 149, 14);
+		contentPane.add(lblDatosCliente);
+		
+		txtDniCliente = new JTextField();
+		txtDniCliente.setBounds(10, 51, 113, 20);
+		contentPane.add(txtDniCliente);
+		txtDniCliente.setColumns(10);
+		txtDniCliente.setName("txtDNICliente");
+		
+		JLabel lblDniCliente = new JLabel("DNI Cliente");
+		lblDniCliente.setBounds(21, 27, 139, 14);
+		contentPane.add(lblDniCliente);
+		lblDniCliente.setName("lblDniCliente");
+		
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				rellenaDatosCliente(txtNombreCliente.getText());
+			}
+		});
+		btnBuscar.setBounds(21, 122, 89, 23);
+		contentPane.add(btnBuscar);
+		btnBuscar.setName("btnBuscar");
+		listSeguros.setVisible(true);
+	}
+
+	private void rellenaDatosCliente(String dni) {
+		Cliente c;
+		try {
+			c = info.cliente(dni);
+		if (c!=null) {
+			txtNombreCliente.setText(c.getNombre());
+			txtTotalCliente.setText(Double.toString(c.totalSeguros()));
+			listModel.removeAllElements();
+			for (Seguro v:c.getSeguros()) {
+				listModel.addElement(v.getMatricula() + " "+v.getCobertura());
+			}
+		} else {
+			txtNombreCliente.setText("Error en BBDD");
+			txtTotalCliente.setText("");
+			listModel.removeAllElements();
+		}
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+			txtNombreCliente.setText("Error en BBDD");
+			txtTotalCliente.setText("");
+			listModel.removeAllElements();
+		}
+		
+	}
+}
+\n--- RUTA: ./SegurosGUI/src/main/java/es/unican/is2/App.java ---
+package es.unican.is2;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        System.out.println( "Hello World!" );
+    }
+}
+\n--- RUTA: ./SegurosGUI/src/test/java/es/unican/is2/AppTest.java ---
+package es.unican.is2;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ * Unit test for simple App.
+ */
+public class AppTest 
+    extends TestCase
+{
+    /**
+     * Create the test case
+     *
+     * @param testName name of the test case
+     */
+    public AppTest( String testName )
+    {
+        super( testName );
+    }
+
+    /**
+     * @return the suite of tests being tested
+     */
+    public static Test suite()
+    {
+        return new TestSuite( AppTest.class );
+    }
+
+    /**
+     * Rigourous Test :-)
+     */
+    public void testApp()
+    {
+        assertTrue( true );
+    }
+}
