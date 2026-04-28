@@ -129,21 +129,21 @@ public class Seguro {
 	public double precio() {
 	    double precioBase = 0;
 	    
-	    // Determinar precio base por cobertura
+	    // determinar precio base por cobertura
 	    switch (cobertura) {
 	        case TODO_RIESGO: precioBase = 600; break;
 	        case TERCEROS: precioBase = 400; break;
 	        case TERCEROS_LUNAS: precioBase = 450; break; 
 	    }
 
-	    // Aplicar recargos por potencia
+	    // aplicar recargos por potencia
 	    if (potencia >= 90 && potencia <= 110) {
 	        precioBase *= 1.05; // +5% recargo
 	    } else if (potencia > 110) {
 	        precioBase *= 1.08; // +8% recargo
 	    }
 
-	    // Aplicar descuento por antiguedad
+	    // aplicar descuento por antiguedad
 	    // si ha pasado mas de 1 mes aplica el 10%
 	    if (fechaInicio.isBefore(LocalDate.now().minusMonths(1))) {
 	        precioBase *= 0.9; // -10% descuento

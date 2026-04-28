@@ -24,20 +24,51 @@ public class SeguroTest {
         // base 600 + (600 * 0.08) = 648
         s = new Seguro("1234ABC", Cobertura.TODO_RIESGO, LocalDate.now(), 120);
         assertEquals(648.0, s.precio(), 0.001);
+        
+        // S4: TERCEROS_LUNAS, potencia 100 (recargo 5%), hoy (sin descuento)
+        // base 450 + (450 * 0.05) = 472.5
+        s = new Seguro("1234ABC", Cobertura.TERCEROS_LUNAS, LocalDate.now(), 100);
+        assertEquals(472.5, s.precio(), 0.001);
+        
+        // S5: TERCEROS_LUNAS, potencia 100 (recargo 5%), fecha posterior (sin descuento)
+        // base 450 + (450* 0.05) = 472.5
+        s = new Seguro("1234ABC", Cobertura.TERCEROS_LUNAS, LocalDate.now().plusMonths(2), 100);
+        assertEquals(0, s.precio(), 0.001);
     }
 
     @Test
     public void testPrecioAVL() {
-        // S4: limite inferior de recargo (potencia 89)
+        // S6: limite inferior de recargo (potencia 89)
         s = new Seguro("1234ABC", Cobertura.TERCEROS, LocalDate.now(), 89);
         assertEquals(400.0, s.precio(), 0.001);
 
-        // S5: limite exacto recargo 5% (potencia 90)
+        // S7: limite exacto recargo 5% (potencia 90)
         s = new Seguro("1234ABC", Cobertura.TERCEROS, LocalDate.now(), 90);
         assertEquals(420.0, s.precio(), 0.001);
 
-        // S6: limite exacto recargo 8% (potencia 111)
+        // S8: limite exacto recargo 8% (potencia 111)
         s = new Seguro("1234ABC", Cobertura.TODO_RIESGO, LocalDate.now(), 111);
         assertEquals(648.0, s.precio(), 0.001);
+    }
+    
+    // iniciamos los metodos get set para que no marquen rojo
+    @Test
+    public void testGettersSetters() {
+        Seguro s = new Seguro();
+        LocalDate fecha = LocalDate.now();
+        
+        s.setMatricula("1234ABC");
+        s.setPotencia(100);
+        s.setCobertura(Cobertura.TODO_RIESGO);
+        s.setFechaInicio(fecha);
+        s.setId(123456);
+        s.setConductorAdicional("Jaime");
+        
+        assertEquals("1234ABC", s.getMatricula());
+        assertEquals(100, s.getPotencia());
+        assertEquals(Cobertura.TODO_RIESGO, s.getCobertura());
+        assertEquals(fecha, s.getFechaInicio());
+        assertEquals(123456, s.getId());
+        assertEquals("Jaime", s.getConductorAdicional());
     }
 }
